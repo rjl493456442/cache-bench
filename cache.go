@@ -46,11 +46,6 @@ func (t CacheTyp) String() string {
 	}
 }
 
-// CacheConfig includes some common configs for cache.
-type CacheConfig struct {
-	MaxSize uint64 // the max capacity of cache in byte.
-}
-
 // NewCache initializes a cache instance with given type and relative config.
 func NewCache(t CacheTyp, size int, valuesize int) (Cache, error) {
 	var (

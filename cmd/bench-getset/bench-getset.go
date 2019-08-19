@@ -40,13 +40,13 @@ func main() {
 	if cacheTyp == cache_bench.Undefined {
 		fatal("Undefined cache type")
 	}
-	var ops func(cnt uint64, cache cache_bench.Cache, key, value []byte) bool
+	var ops func(cnt uint64, cache cache_bench.Cache, key, value []byte, query []byte) bool
 	if *mode == "getset" {
 		p := *getp
-		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte) bool {
+		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte, query []byte) bool {
 			if rand.Intn(100) < p {
 				// get operation
-				cache.Get(randomKey(key))
+				cache.Get(query)
 				return true
 			} else {
 				// set operation
@@ -56,12 +56,15 @@ func main() {
 		}
 	} else if *mode == "get" {
 		pureget = true // initialization needed
-		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte) bool {
-			cache.Get(randomKey(key))
+		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte, query []byte) bool {
+			cache.Get(query)
 			return true
 		}
 	} else {
-		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte) bool { cache.Set(key, value); return false }
+		ops = func(cnt uint64, cache cache_bench.Cache, key, value []byte, query []byte) bool {
+			cache.Set(key, value)
+			return false
+		}
 	}
 	config = cache_bench.BenchConfig{
 		KeySize:   *keySize,
@@ -81,18 +84,6 @@ func main() {
 	}
 	// Run benchmark and collect result as well as system metrics.
 	fmt.Println(cache_bench.Bench(cache, config, lastKey))
-}
-
-func randomKey(key []byte) []byte {
-	var ret = make([]byte, len(key))
-	for i, k := range key {
-		if k == 0 {
-			ret[i] = byte(0)
-		} else {
-			ret[i] = byte(rand.Intn(int(k)))
-		}
-	}
-	return ret
 }
 
 func fatal(msg ...interface{}) {
