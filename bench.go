@@ -67,7 +67,9 @@ loop:
 		default:
 		}
 		if !config.Ops(cnt, cache, key, value, query) {
-			key = incBytes(key) // increase key if set operation is made
+			// Increase key value pair if set operation is made
+			key = incBytes(key)
+			value = incBytes(value)
 		}
 		cnt += 1
 		randomKey(query, key)
