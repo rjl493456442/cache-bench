@@ -25,8 +25,9 @@ func (r Report) String() string {
 	var report string
 	report += fmt.Sprintf("**************** Benchmark Report ****************\n")
 	report += fmt.Sprintf("[1] TPS %d\n", r.TPS)
-	report += fmt.Sprintf("[2] MemStat Alloc: %dMB, TotalAlloc:%dMB, Sys:%dMB, Mallocs:%d\n",
-		toMegaBytes(r.MemStat.Alloc), toMegaBytes(r.MemStat.TotalAlloc), toMegaBytes(r.MemStat.Sys), r.MemStat.Mallocs)
+	report += fmt.Sprintf("[2] MemStat Alloc: %dMB, TotalAlloc:%dMB, Sys:%dMB, Mallocs:%d, Free:%d\n",
+		toMegaBytes(r.MemStat.Alloc), toMegaBytes(r.MemStat.TotalAlloc), toMegaBytes(r.MemStat.Sys),
+		r.MemStat.Mallocs, r.MemStat.Frees)
 	report += fmt.Sprintf("[3] CacheStat %v\n", r.CacheStat)
 	return report
 }

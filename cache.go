@@ -14,8 +14,7 @@ type Cache interface {
 	// Set stores (k, v) in the cache.
 	Set(k, v []byte)
 
-	// Get retrieves the entry specified by given key. What's more,
-	// the value of entry is append to the dst slice.
+	// Get retrieves the entry value specified by given key.
 	Get(k []byte) []byte
 
 	// Stat retrieves all cache statistic maintained by underlying cache
@@ -28,7 +27,7 @@ type CacheTyp int
 
 const (
 	Undefined CacheTyp = iota
-	BigCache           = iota
+	BigCache
 	FastCache
 	FreeCache
 )
